@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.welcome-left-section {
+  @apply w-full lg:w-[40%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
+}
+
+.welcome-section {
+  @apply flex flex-col justify-between lg:flex-row h-screen relative overflow-hidden;
+}
+
+.welcome-right-section {
+  @apply w-full lg:w-[60%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
+}
