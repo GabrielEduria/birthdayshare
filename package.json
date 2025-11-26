@@ -9,7 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "fabric": "^6.9.0",
+    "@supabase/supabase-js": "^2.85.0",
+    "interactjs": "^1.10.27",
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0"

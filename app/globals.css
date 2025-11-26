@@ -26,7 +26,7 @@ body {
 }
 
 .welcome-left-section {
-  @apply w-full lg:w-[40%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
+  @apply w-full lg:w-[30%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
 }
 
 .welcome-section {
@@ -34,5 +34,5 @@ body {
 }
 
 .welcome-right-section {
-  @apply w-full lg:w-[60%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
+  @apply w-full lg:w-[70%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
 }
