@@ -1,30 +1,23 @@
-import Link from "next/link";
 
+import Link from "next/link";
+import Button from "../components/button/Button";
 export default function Welcome() {
   return (
-    <div className="welcome-section bg-amber-200 text-black min-h-screen flex">
-      <div className="welcome-left-section flex-1 p-5">
-        <div className="z-10 relative lg:mt-4 lg:mb-16">
-          <Link href="/create" className="text-2xl">
-            <h1>Start Designing</h1>
-          </Link>
-        </div>
-        <div className="pb-6 lg:pb-8 flex-1"></div>
-      </div>
 
-      <div className="welcome-right-section bg-[#FF9280] flex-1 flex items-center justify-center">
-        <div className="z-10 relative p-4 text-center">
-          <blockquote className="text-sm md:text-xl lg:text-2xl font-medium mb-1 md:mb-6 lg:mb-8">
-            BirthdayShare — a shareable URL app by{" "}
-            <a
-              href="http://gabrieleduria.com"
-              className="text-blue-700 hover:underline transition duration-200"
-            >
-              Gabbbyyyy
-            </a>
-          </blockquote>
-        </div>
+   <div className="h-screen w-screen flex bg-amber-200">
+      <div className="border-2 h-auto mx-auto">
+          <div className="flex flex-col text-center border-2 mt-50">
+            <h1 className="font-happy-monkey text-3xl lg:text-4xl text-gray-700 font-black">Welcome to Birthday-Share!</h1>
+            <h2 className="font-roboto text-2xl lg:text-3xl text-gray-700 font-medium">Your Shareable Birthday Url Web Application</h2>
+          </div>
+          <div className="w-full flex justify-center pt-5">
+            <Link href='/create'>
+              <Button>
+                Start Curating
+              </Button>
+            </Link>
+          </div> 
       </div>
-    </div>
-  );
+   </div>    
+  )
 }

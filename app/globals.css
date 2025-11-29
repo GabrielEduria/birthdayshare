@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Happy+Monkey&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-happy-monkey: "Happy Monkey", system-ui;
+  --font-roboto: "Roboto", system-ui;
+}
 
 :root {
   --background: #ffffff;
@@ -25,14 +32,3 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.welcome-left-section {
-  @apply w-full lg:w-[30%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
-}
-
-.welcome-section {
-  @apply flex flex-col justify-between lg:flex-row h-screen relative overflow-hidden;
-}
-
-.welcome-right-section {
-  @apply w-full lg:w-[70%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
-}
