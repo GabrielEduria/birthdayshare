@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 
 export default function Welcome() {
   return (
-   <div className="h-screen w-screen flex bg-amber-200">
+   <div className="h-screen w-screen bg-amber-200">
     <Navbar />
       <div className="border-2 h-auto mx-auto">
           <div className="flex flex-col text-center border-2 mt-50">
