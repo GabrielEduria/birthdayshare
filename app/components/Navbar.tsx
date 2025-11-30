@@ -8,11 +8,11 @@ function Navbar() {
     const [isopen, setIsOpen] = useState(false);
 
     return (    
-        <nav className="sticky top-0 z-100 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+        <nav className="sticky top-0 z-100 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/70">
           <div className="container mx-auto px-4">
             </div>
         </nav>
     )
 }
 
-export default Navbar
+export default Navbar;

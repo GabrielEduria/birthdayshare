@@ -15,7 +15,7 @@ export default function Welcome() {
           <div className="w-full flex justify-center pt-5">
             <Link href='/create'>
               <Button>
-                Start Curating
+                Write a message!
               </Button>
             </Link>
           </div> 
