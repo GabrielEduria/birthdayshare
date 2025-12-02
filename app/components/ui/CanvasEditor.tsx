@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import interact from "interactjs";
+import Button from "../button/Button";
 
 type CanvasItem = {
   id: number;
@@ -141,22 +142,22 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
         ))}
       </div>
 
-      <div className="flex gap-3 mt-3">
-        <button
+      <div className="flex gap-3 mt-3 justify-center">
+        <Button
           onClick={addText}
-          className="px-3 py-1 bg-gray-100 border"
+          className="px-3 py-1 bg-blue-500 border"
         >
           Add Text
-        </button>
+        </Button>
 
         <input type="file" onChange={addImage} />
 
-        <button
+        <Button
           onClick={exportJSON}
           className="px-3 py-1 bg-blue-500 text-white"
         >
           Save Design
-        </button>
+        </Button>
       </div>
     </div>
   );
