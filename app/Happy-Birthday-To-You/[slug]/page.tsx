@@ -2,9 +2,7 @@ import { notFound } from "next/navigation";
 import CanvasItem from "@/app/components/CanvasItem";
 import type { CanvasItem as CanvasItemType } from "@/app/types/CanvasItem";
 
-// Temporary mock – later you will replace with DB fetch
 async function getDesign(slug: string): Promise<CanvasItemType[] | null> {
-  // Example saved design
   return [
     {
       id: 1,
@@ -27,8 +25,12 @@ async function getDesign(slug: string): Promise<CanvasItemType[] | null> {
   ];
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const design = await getDesign(params.slug);
+export default async function Page(
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+
+  const design = await getDesign(slug);
 
   if (!design) return notFound();
 
