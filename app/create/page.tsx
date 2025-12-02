@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CanvasEditor from "../components/ui/CanvasEditor";
+import Header from "../components/Header";
 
 type CanvasItem = Record<string, unknown>;
 
@@ -39,27 +40,30 @@ export default function Create() {
   };
 
   return (
-    <div className="p-6 flex flex-col items-center min-h-screen bg-gray-100">
-      <h1 className="text-2xl mb-4 font-semibold">Create Birthday Card</h1>
+    <>
+    <Header />
+      <div className="p-6 flex flex-col items-center min-h-screen bg-gray-100">
+        <h1 className="text-2xl mb-4 font-semibold">Create Birthday Card</h1>
 
-      <CanvasEditor onExport={setCanvasJson} />
+        <CanvasEditor onExport={setCanvasJson} />
 
-      <div className="flex gap-2 mt-4">
-        <input
-          type="text"
-          className="border px-3 py-1"
-          placeholder="Enter name for URL (ex: Sarah)"
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-        />
-        <button
-          onClick={saveCard}
-          className="px-4 py-1 bg-green-600 text-white rounded"
-          disabled={saving}
-        >
-          {saving ? "Saving..." : "Publish"}
-        </button>
+        <div className="flex gap-2 mt-4">
+          <input
+            type="text"
+            className="border px-3 py-1"
+            placeholder="Enter name for URL (ex: Sarah)"
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+          />
+          <button
+            onClick={saveCard}
+            className="px-4 py-1 bg-green-600 text-white rounded"
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Publish"}
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
