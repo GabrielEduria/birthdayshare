@@ -1,167 +1,110 @@
-'use client';
-import { useEffect, useRef, useState } from "react";
-import interact from "interactjs";
+"use client";
+
+import { useState } from "react";
+import { CanvasItem } from "@/app/types/CanvasItem";
+import DraggableItem from "./DraggableItem";
+import { v4 as uuid } from "uuid";
 import Button from "../button/Button";
 
-type CanvasItem = {
-  id: string; 
-  type: "text" | "image";
-  content: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
-
-interface CanvasEditorProps {
+interface Props {
   onExport: (items: CanvasItem[]) => void;
 }
 
-export default function CanvasEditor({ onExport }: CanvasEditorProps) {
-  const canvasRef = useRef<HTMLDivElement>(null);
+export default function CanvasEditor({ onExport }: Props) {
   const [items, setItems] = useState<CanvasItem[]>([]);
 
-  useEffect(() => {
-    const targets = document.querySelectorAll<HTMLElement>(".draggable");
-
-    targets.forEach((el) => {
-      interact(el)
-        .draggable({
-          listeners: {
-            move(event) {
-              const id = el.dataset.id!;
-              const dx = event.dx;
-              const dy = event.dy;
-
-              setItems((prev) =>
-                prev.map((item) =>
-                  item.id === id ? { ...item, x: item.x + dx, y: item.y + dy } : item
-                )
-              );
-            },
-          },
-        })
-        .resizable({
-          edges: { left: true, right: true, bottom: true, top: true },
-          listeners: {
-            move(event) {
-              const id = el.dataset.id!;
-              const dx = event.deltaRect.left;
-              const dy = event.deltaRect.top;
-              const width = event.rect.width;
-              const height = event.rect.height;
-
-              setItems((prev) =>
-                prev.map((item) =>
-                  item.id === id
-                    ? {
-                        ...item,
-                        x: item.x + dx,
-                        y: item.y + dy,
-                        width,
-                        height,
-                      }
-                    : item
-                )
-              );
-            },
-          },
-        });
-    });
-  }, [items]);
-
+  
   const addText = () => {
     const newItem: CanvasItem = {
-      id: crypto.randomUUID(),
+      id: uuid(),
       type: "text",
-      content: "Happy Birthday!",
-      x: 50,
-      y: 50,
+      content: "New Text",
+      x: 100,
+      y: 100,
       width: 200,
-      height: 50,
+      height: 60,
     };
     setItems((prev) => [...prev, newItem]);
+    onExport([...items, newItem]);
   };
 
-  const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const newItem: CanvasItem = {
-        id: crypto.randomUUID(),
-        type: "image",
-        content: reader.result as string,
-        x: 50,
-        y: 50,
-        width: 200,
-        height: 200,
-      };
-      setItems((prev) => [...prev, newItem]);
+  const addImage = (url: string) => {
+    const newItem: CanvasItem = {
+      id: uuid(),
+      type: "image",
+      content: url,
+      x: 150,
+      y: 150,
+      width: 250,
+      height: 250,
     };
+    setItems((prev) => [...prev, newItem]);
+    onExport([...items, newItem]);
+  };
+
+  const updateItem = (updated: CanvasItem) => {
+    setItems(prev =>
+      prev.map(item => (item.id === updated.id ? updated : item))
+    );
+    onExport(items);
+  };
+
+  // select local images
+  const addImageFromFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const newItem: CanvasItem = {
+      id: uuid(),
+      type: "image",
+      content: reader.result as string, 
+      x: 150,
+      y: 150,
+      width: 250,
+      height: 250,
+    };
+    setItems(prev => [...prev, newItem]);
+    onExport([...items, newItem]);
+  };
     reader.readAsDataURL(file);
   };
 
-  const exportJSON = () => {
-    const output = items.map((item) => {
-      const el = document.getElementById(item.id) as HTMLElement | null;
-      return {
-        ...item,
-        x: parseFloat(el?.dataset.x || item.x.toString()),
-        y: parseFloat(el?.dataset.y || item.y.toString()),
-        width: parseFloat(el?.style.width || item.width.toString()),
-        height: parseFloat(el?.style.height || item.height.toString()),
-      };
-    });
-
-    onExport(output);
-  };
-
   return (
-    <div>
-      <div
-        ref={canvasRef}
-        id="canvas"
-        className="relative bg-white border"
-        style={{ width: 1080, height: 1080 }}
-      >
-        {items.map((item) => (
-          <div
-            key={item.id}
-            id={item.id}
-            data-id={item.id}
-            data-x={item.x}
-            data-y={item.y}
-            className="draggable absolute border border-gray-300 p-2 bg-white"
-            style={{
-              width: item.width,
-              height: item.height,
-              transform: `translate(${item.x}px, ${item.y}px)`,
-            }}
-          >
-            {item.type === "text" && (
-              <div className="w-full h-full flex items-center justify-center text-xl">
-                {item.content}
-              </div>
-            )}
-            {item.type === "image" && (
-              <img src={item.content} className="w-full h-full object-cover" />
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className="flex gap-3 mt-3 justify-center items-center">
-        <Button onClick={addText} className="px-3 py-1 bg-blue-500 border">
+    <div className="flex flex-col items-center gap-3">
+  
+      <div className="flex gap-3">
+        <Button
+          onClick={addText}
+         
+        >
           Add Text
         </Button>
 
-        <input type="file" onChange={addImage} />
+        <div className="pt-2">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={addImageFromFile}
+            className="hidden"
+            id="file-upload"
+          />
+          <label htmlFor="file-upload">
+            <Button>
+              Add Image
+            </Button>
+          </label>
+        </div>
+      </div>
 
-        <Button onClick={exportJSON} className="px-3 py-1 bg-blue-500 text-white">
-          Save Design
-        </Button>
+      <div
+        className="relative border bg-white"
+        style={{ width: 1080, height: 1080 }}
+      >
+        {items.map((item) => (
+          <DraggableItem key={item.id} item={item} onChange={updateItem} />
+        ))}
       </div>
     </div>
   );

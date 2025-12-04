@@ -8,19 +8,19 @@ return (
   <div className="relative min-h-screen w-full overflow-hidden bg-white dark:bg-gray-950">
 
   
-    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950" />
+    <div className="absolute inset-0 bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950" />
 
     <div className="absolute -inset-[10%] overflow-hidden">
       <div className="absolute top-[10%] left-[20%] w-[30%] aspect-square rounded-full 
-        bg-gradient-to-r from-purple-300/40 to-indigo-400/40 
+        bg-linear-to-r from-purple-300/40 to-indigo-400/40 
         dark:from-purple-600/20 dark:to-indigo-700/20 blur-3xl" />
 
       <div className="absolute top-[60%] left-[60%] w-[25%] aspect-square rounded-full
-        bg-gradient-to-r from-amber-300/40 to-orange-400/40 
+        bg-linear-to-r from-amber-300/40 to-orange-400/40 
         dark:from-amber-600/20 dark:to-orange-700/20 blur-3xl" />
 
       <div className="absolute top-[40%] left-[30%] w-[20%] aspect-square rounded-full
-        bg-gradient-to-r from-emerald-300/40 to-teal-400/40 
+        bg-linear-to-r from-emerald-300/40 to-teal-400/40 
         dark:from-emerald-600/20 dark:to-teal-700/20 blur-3xl" />
     </div>
 
@@ -33,7 +33,7 @@ return (
     </div>
 
 
-    <div className="relative z-30 max-w-3xl mx-auto text-center px-6 pt-24">
+    <div className="relative z-30 w-5xl mx-auto text-center px-6 pt-50">
       <p className="inline-block px-4 py-1 bg-white/80 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 rounded-2xl text-black dark:text-white mb-4">
         Make a message now!
       </p>
