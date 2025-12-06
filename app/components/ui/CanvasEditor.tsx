@@ -160,12 +160,13 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
   };
 
   const handleAddShape = (shape: string) => {
-
     addItem({
-      type: "image" as any, 
-      content: "",
-      width: 160,
-      height: 160,
+      type: "image",
+      content: "",  
+      shape,
+      width: 120,
+      height: 120,
+      color: "#F59E0B",  
     });
   };
 
@@ -227,7 +228,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
   }, [canvasBg]);
 
   return (
-    <div className="w-full h-[720px] flex bg-gray-50 rounded shadow">
+    <div className="w-full h-[720px] flex bg-gray-50 shadow rounded-2xl">
  
       <div className="flex-none">
         <Sidebar
@@ -236,6 +237,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
           onUploadImage={handleUploadImage}
           onSetBackground={handleSetBackground}
           onAddShape={handleAddShape}
+          onAddEmoji={handleAddEmoji}
         />
       </div>
 
@@ -273,25 +275,19 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
 
         <div
           ref={canvasRef}
-          className="relative flex-1 border rounded-lg overflow-hidden shadow-sm"
+          className="relative flex-1 border rounded-lg overflow-hidden shadow-sm p-4 bg-white"
           style={{
             ...canvasStyle,
-            minHeight: 420,
+            minHeight: 480,
           }}
         >
-       
           {items.map((it) => (
             <CanvasItemComponent
               key={it.id}
               item={it as EditorCanvasItem}
               selectedId={selected}
-              setSelected={(id: string | null) => setSelected(id)}
-              updateItem={(id: string, changes: Partial<EditorCanvasItem>) =>
-                updateItem(id, changes)
-              }
-           
-              onDelete={() => deleteItem(it.id)}
-              onDuplicate={() => duplicateItem(it.id)}
+              setSelected={setSelected}
+              updateItem={(id, changes) => updateItem(id, changes)}
             />
           ))}
         </div>

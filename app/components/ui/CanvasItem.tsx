@@ -5,19 +5,46 @@ import React from "react";
 import type { CanvasItem as BaseCanvasItem } from "@/app/types/CanvasItem";
 import DraggableItem from "./DraggableItem";
 
-const renderShape = (shape: string | undefined, width: number, height: number, color: string) => {
+interface CanvasItemProps {
+  item: BaseCanvasItem & {
+    fontFamily?: string;
+    fontSize?: number;
+    color?: string;
+    shape?: string;
+  };
+  selectedId: string | null;
+  setSelected: (id: string | null) => void;
+  updateItem: (id: string, changes: Partial<unknown>) => void;
+}
+
+const renderShape = (
+  shape: string | undefined,
+  width: number,
+  height: number,
+  color: string
+) => {
   switch (shape) {
     case "rectangle":
       return <div style={{ width, height, backgroundColor: color || "#ccc" }} />;
     case "circle":
-      return <div style={{ width, height, borderRadius: "50%", backgroundColor: color || "#ccc" }} />;
+      return (
+        <div
+          style={{
+            width,
+            height,
+            borderRadius: "50%",
+            backgroundColor: color || "#ccc",
+          }}
+        />
+      );
     case "star":
       return (
         <div
           style={{
             width,
             height,
-            clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+            clipPath:
+              "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
             backgroundColor: color || "#ffc107",
           }}
         />
@@ -39,22 +66,11 @@ const renderShape = (shape: string | undefined, width: number, height: number, c
   }
 };
 
-interface CanvasItemProps {
-  item: BaseCanvasItem & { shape?: string; fontFamily?: string; color?: string; fontSize?: number };
-  selectedId: string | null;
-  setSelected: (id: string | null) => void;
-  updateItem: (id: string, changes: Partial<unknown>) => void;
-  onDelete?: () => void;
-  onDuplicate?: () => void;
-}
-
 export default function CanvasItem({
   item,
   selectedId,
   setSelected,
   updateItem,
-  onDelete,
-  onDuplicate,
 }: CanvasItemProps) {
   const isSelected = selectedId === item.id;
 
@@ -63,9 +79,7 @@ export default function CanvasItem({
       item={item}
       isSelected={isSelected}
       setSelected={setSelected}
-      updateItem={updateItem}
-      onDelete={onDelete}
-      onDuplicate={onDuplicate}
+      onChange={(updatedItem) => updateItem(item.id, updatedItem)}
     >
       {item.type === "text" ? (
         <div
@@ -77,6 +91,11 @@ export default function CanvasItem({
             color: item.color || "#000",
             width: "100%",
             height: "100%",
+            whiteSpace: "pre-wrap", 
+            textAlign: "left",
+            direction: "ltr",
+            overflowWrap: "break-word",
+            padding: 4,
           }}
           onInput={(e) =>
             updateItem(item.id, { content: e.currentTarget.innerText })
@@ -87,23 +106,12 @@ export default function CanvasItem({
       ) : item.type === "image" && item.shape ? (
         renderShape(item.shape, item.width, item.height, item.color || "#ccc")
       ) : item.type === "image" ? (
-        <img src={item.content} alt="" style={{ width: "100%", height: "100%" }} />
-      ) : null}
-
-      {isSelected && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            border: "2px dashed #3b82f6",
-            pointerEvents: "none",
-            boxSizing: "border-box",
-          }}
+        <img
+          src={item.content}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
         />
-      )}
+      ) : null}
     </DraggableItem>
   );
 }
