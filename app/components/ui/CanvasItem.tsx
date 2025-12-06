@@ -82,7 +82,7 @@ export default function CanvasItem({
       onChange={(updatedItem) => updateItem(item.id, updatedItem)}
     >
       {item.type === "text" ? (
-        <div
+       <div
           contentEditable
           suppressContentEditableWarning
           style={{
@@ -91,15 +91,11 @@ export default function CanvasItem({
             color: item.color || "#000",
             width: "100%",
             height: "100%",
-            whiteSpace: "pre-wrap", 
-            textAlign: "left",
-            direction: "ltr",
-            overflowWrap: "break-word",
-            padding: 4,
+            direction: "ltr",      
+            textAlign: "left",     
+            whiteSpace: "pre-wrap" 
           }}
-          onInput={(e) =>
-            updateItem(item.id, { content: e.currentTarget.innerText })
-          }
+          onInput={(e) => updateItem(item.id, { content: e.currentTarget.innerText })}
         >
           {item.content}
         </div>
