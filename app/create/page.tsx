@@ -10,13 +10,14 @@ import type { CanvasItem } from "@/app/types/CanvasItem";
 
 export default function Create() {
   const router = useRouter();
+
   const [slug, setSlug] = useState("");
   const [canvasJson, setCanvasJson] = useState<CanvasItem[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   const saveCard = async () => {
-    if (!slug) {
+    if (!slug.trim()) {
       setError("Enter a name for your card URL");
       return;
     }
@@ -27,7 +28,7 @@ export default function Create() {
       const res = await fetch("/api/saveCard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, canvasJson }),
+        body: JSON.stringify({ slug: slug.trim(), canvasJson }),
       });
 
       const data = await res.json();
@@ -37,7 +38,7 @@ export default function Create() {
       } else {
         setError(data.error || "Error saving card");
       }
-    } catch (err) {
+    } catch {
       setError("Failed to save card");
     } finally {
       setSaving(false);
@@ -77,7 +78,10 @@ export default function Create() {
             className="border px-20 bg-white"
             placeholder="Enter name for URL (ex: Sarah)"
             value={slug}
-            onChange={(e) => setSlug(e.target.value)}
+            onChange={(e) => {
+              setError("");
+              setSlug(e.target.value);
+            }}
           />
 
           <Button

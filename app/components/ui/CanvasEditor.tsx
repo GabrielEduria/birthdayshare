@@ -1,110 +1,300 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
-import { CanvasItem } from "@/app/types/CanvasItem";
-import DraggableItem from "./DraggableItem";
-import { v4 as uuid } from "uuid";
-import Button from "../button/Button";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Sidebar from "./sidebar/Sidebar";
+import CanvasItemComponent from "./CanvasItem";
+import type { CanvasItem as BaseCanvasItem } from "@/app/types/CanvasItem";
+import { v4 as uuidv4 } from "uuid";
 
-interface Props {
-  onExport: (items: CanvasItem[]) => void;
+type EditorCanvasItem = BaseCanvasItem & {
+
+  fontFamily?: string;
+  fontSize?: number;
+  color?: string;
+
+  shape?: string;
+
+  locked?: boolean;
+};
+
+interface CanvasEditorProps {
+  onExport?: (items: EditorCanvasItem[]) => void;
 }
 
-export default function CanvasEditor({ onExport }: Props) {
-  const [items, setItems] = useState<CanvasItem[]>([]);
+export default function CanvasEditor({ onExport }: CanvasEditorProps) {
 
-  
-  const addText = () => {
-    const newItem: CanvasItem = {
-      id: uuid(),
+  const [items, setItems] = useState<EditorCanvasItem[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [canvasBg, setCanvasBg] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (onExport) onExport(items);
+  }, [items, onExport]);
+
+  const makeBase = (overrides: Partial<EditorCanvasItem> = {}): EditorCanvasItem => {
+    const id = uuidv4();
+    return {
+      id,
       type: "text",
-      content: "New Text",
-      x: 100,
-      y: 100,
+      content: "",
+      x: 40,
+      y: 40,
       width: 200,
       height: 60,
-    };
-    setItems((prev) => [...prev, newItem]);
-    onExport([...items, newItem]);
+      ...overrides,
+    } as EditorCanvasItem;
   };
 
-  const addImage = (url: string) => {
-    const newItem: CanvasItem = {
-      id: uuid(),
+  const addItem = (item: Partial<EditorCanvasItem>) => {
+    const newItem = makeBase(item);
+    setItems((s) => [...s, newItem]);
+    setSelected(newItem.id);
+    return newItem;
+  };
+
+  const handleAddText = (preset?: string) => {
+    if (!preset) {
+      addItem({
+        type: "text",
+        content: "New text",
+        fontFamily: "Arial",
+        fontSize: 20,
+        color: "#000000",
+        width: 240,
+        height: 60,
+      });
+      return;
+    }
+
+    if (preset.startsWith("font:")) {
+      const font = preset.replace(/^font:/, "");
+      if (selected) {
+        setItems((prev) =>
+          prev.map((it) => (it.id === selected ? { ...it, fontFamily: font } : it))
+        );
+      }
+      return;
+    }
+
+    if (preset.startsWith("color:")) {
+      const color = preset.replace(/^color:/, "");
+      if (selected) {
+        setItems((prev) =>
+          prev.map((it) => (it.id === selected ? { ...it, color } : it))
+        );
+      }
+      return;
+    }
+
+    if (preset === "Heading") {
+      addItem({
+        type: "text",
+        content: "Heading",
+        fontFamily: "Montserrat",
+        fontSize: 40,
+        color: "#111827",
+        width: 420,
+        height: 80,
+      });
+      return;
+    }
+
+    if (preset === "Subheading") {
+      addItem({
+        type: "text",
+        content: "Subheading",
+        fontFamily: "Roboto",
+        fontSize: 28,
+        color: "#111827",
+        width: 360,
+        height: 64,
+      });
+      return;
+    }
+
+    if (preset === "Body") {
+      addItem({
+        type: "text",
+        content: "Body text",
+        fontFamily: "Roboto",
+        fontSize: 16,
+        color: "#111827",
+      });
+      return;
+    }
+
+    addItem({
+      type: "text",
+      content: preset,
+      fontFamily: "Great Vibes",
+      fontSize: 36,
+      color: "#111827",
+      width: 360,
+      height: 80,
+    });
+  };
+
+  const handleAddImage = (urlOrBase64: string) => {
+    addItem({
       type: "image",
-      content: url,
-      x: 150,
-      y: 150,
-      width: 250,
-      height: 250,
+      content: urlOrBase64,
+      width: 240,
+      height: 240,
+    });
+  };
+
+  const handleUploadImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) {
+        handleAddImage(reader.result.toString());
+      }
     };
-    setItems((prev) => [...prev, newItem]);
-    onExport([...items, newItem]);
-  };
-
-  const updateItem = (updated: CanvasItem) => {
-    setItems(prev =>
-      prev.map(item => (item.id === updated.id ? updated : item))
-    );
-    onExport(items);
-  };
-
-  // select local images
-  const addImageFromFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    const newItem: CanvasItem = {
-      id: uuid(),
-      type: "image",
-      content: reader.result as string, 
-      x: 150,
-      y: 150,
-      width: 250,
-      height: 250,
-    };
-    setItems(prev => [...prev, newItem]);
-    onExport([...items, newItem]);
-  };
     reader.readAsDataURL(file);
   };
 
-  return (
-    <div className="flex flex-col items-center gap-3">
-  
-      <div className="flex gap-3">
-        <Button
-          onClick={addText}
-         
-        >
-          Add Text
-        </Button>
+  const handleSetBackground = (bg: string) => {
+    setCanvasBg(bg);
+  };
 
-        <div className="pt-2">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={addImageFromFile}
-            className="hidden"
-            id="file-upload"
-          />
-          <label htmlFor="file-upload">
-            <Button>
-              Add Image
-            </Button>
-          </label>
-        </div>
+  const handleAddShape = (shape: string) => {
+
+    addItem({
+      type: "image" as any, 
+      content: "",
+      width: 160,
+      height: 160,
+    });
+  };
+
+  const handleAddEmoji = (emoji: string) => {
+    addItem({
+      type: "text",
+      content: emoji,
+      fontFamily: "Segoe UI Emoji",
+      fontSize: 40,
+      width: 120,
+      height: 120,
+    });
+  };
+
+  const updateItem = (id: string, changes: Partial<EditorCanvasItem>) => {
+    setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...changes } : it)));
+  };
+
+  const deleteItem = (id: string) => {
+    setItems((prev) => prev.filter((it) => it.id !== id));
+    if (selected === id) setSelected(null);
+  };
+
+  const duplicateItem = (id: string) => {
+    const original = items.find((i) => i.id === id);
+    if (!original) return;
+    const copy = makeBase({
+      ...original,
+      id: uuidv4(),
+      x: original.x + 12,
+      y: original.y + 12,
+    });
+    setItems((prev) => [...prev, copy]);
+    setSelected(copy.id);
+  };
+
+  const canvasStyle = useMemo<React.CSSProperties>(() => {
+    if (!canvasBg) {
+      return {
+        backgroundColor: "#ffffff",
+      };
+    }
+
+    if (canvasBg.startsWith("linear-gradient") || canvasBg.startsWith("radial-gradient")) {
+      return { backgroundImage: canvasBg };
+    }
+
+ 
+    if (canvasBg.startsWith("data:") || canvasBg.startsWith("http") || canvasBg.startsWith("/")) {
+      return {
+        backgroundImage: `url(${canvasBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      };
+    }
+
+
+    return { backgroundColor: canvasBg };
+  }, [canvasBg]);
+
+  return (
+    <div className="w-full h-[720px] flex bg-gray-50 rounded shadow">
+ 
+      <div className="flex-none">
+        <Sidebar
+          onAddText={handleAddText}
+          onAddImage={handleAddImage}
+          onUploadImage={handleUploadImage}
+          onSetBackground={handleSetBackground}
+          onAddShape={handleAddShape}
+        />
       </div>
 
-      <div
-        className="relative border bg-white"
-        style={{ width: 1080, height: 1080 }}
-      >
-        {items.map((item) => (
-          <DraggableItem key={item.id} item={item} onChange={updateItem} />
-        ))}
+  
+      <div className="flex-1 p-6 flex flex-col">
+    
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex gap-2 items-center">
+            <button
+              className="px-3 py-1 bg-white border rounded text-sm"
+              onClick={() => {
+               
+                handleAddText("Heading");
+              }}
+            >
+              Add Heading
+            </button>
+
+            <button
+              className="px-3 py-1 bg-white border rounded text-sm"
+              onClick={() => {
+               
+                if (onExport) onExport(items);
+              }}
+            >
+              Export JSON
+            </button>
+          </div>
+
+          <div className="text-sm text-gray-600">
+            Items: {items.length} {selected ? `• selected: ${selected}` : ""}
+          </div>
+        </div>
+
+
+        <div
+          ref={canvasRef}
+          className="relative flex-1 border rounded-lg overflow-hidden shadow-sm"
+          style={{
+            ...canvasStyle,
+            minHeight: 420,
+          }}
+        >
+       
+          {items.map((it) => (
+            <CanvasItemComponent
+              key={it.id}
+              item={it as EditorCanvasItem}
+              selectedId={selected}
+              setSelected={(id: string | null) => setSelected(id)}
+              updateItem={(id: string, changes: Partial<EditorCanvasItem>) =>
+                updateItem(id, changes)
+              }
+           
+              onDelete={() => deleteItem(it.id)}
+              onDuplicate={() => duplicateItem(it.id)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

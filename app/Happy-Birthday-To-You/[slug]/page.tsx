@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import CanvasItem from "@/app/components/CanvasItem";
+import CanvasItem from "@/app/components/ui/CanvasItem";
 import type { CanvasItem as CanvasItemType } from "@/app/types/CanvasItem";
 
 async function getDesign(slug: string): Promise<CanvasItemType[] | null> {
@@ -41,7 +41,11 @@ export default async function Page(
         style={{ width: 1080, height: 1080 }}
       >
         {design.map((item) => (
-          <CanvasItem key={item.id} item={item} />
+          <CanvasItem key={item.id} item={item} selectedId={null} setSelected={function (id: string | null): void {
+            throw new Error("Function not implemented.");
+          } } updateItem={function (id: string, changes: Partial<unknown>): void {
+            throw new Error("Function not implemented.");
+          } } />
         ))}
       </div>
     </div>
