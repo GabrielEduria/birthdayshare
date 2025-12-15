@@ -27,14 +27,13 @@ return (
 
   <div>
       <div className="relative z-30 mx-auto text-center px-6 pt-50">
-        <p className="inline-block text-xs px-4 py-1 bg-gray-600/80 border border-gray-700 dark:border-gray-700 rounded-2xl text-black dark:text-gray-200 mb-4">
-          Make a message now!
-        </p>
-        <h1 className="font-happy-monkey text-4xl lg:text-6xl text-black font-black leading-tight">
+     
+        <h1 className="font-happy-monkey text-4xl lg:text-6xl tracking-tight text-black font-black leading-tight">
           Welcome to Birthday-Share!
         </h1>
-        <h2 className="font-roboto text-2xl lg:text-3xl text-black font-medium mt-4">
-          Your Shareable Birthday URL Web Application
+        <h2 className="font-roboto text-xl text-black font-medium text-center line-clamp-3 px-20 mt-4">
+          A shareable birthday canvas url maker application made easy to use. S for your loved ones.
+          No Account no hassle.
         </h2>
         <div className="flex justify-center mt-8">
           <Link href="/create">

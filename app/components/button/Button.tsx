@@ -17,7 +17,7 @@ export default function Button({
   ...rest
 }: ButtonProps) {
   const baseStyles =
-    "bg-orange-500 hover:bg-orange-300 text-white font-bold py-4 px-6 border-b-4 border-orange-700 hover:border-orange-500 rounded cursor-pointer transition";
+    "bg-orange-500 hover:bg-orange-300 text-white font-bold py-4 px-6 border-b-4 border-orange-700 hover:border-orange-500 rounded-3xl cursor-pointer transition";
 
   if (href) {
     return (
