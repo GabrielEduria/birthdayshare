@@ -27,15 +27,15 @@ return (
 
   <div>
       <div className="relative z-30 mx-auto text-center px-6 pt-50">
-     
+        <p className="font-roboto inline-block rounded-full shadow-2xl px-4 py-1 text-black backdrop-blur-xl bg-white/20">Birthday Share!</p>
         <h1 className="font-happy-monkey text-4xl lg:text-6xl tracking-tight text-black font-black leading-tight">
-          Welcome to Birthday-Share!
+          A shareable birthday canvas url maker made easy to use
         </h1>
-        <h2 className="font-roboto text-xl text-black font-medium text-center line-clamp-3 px-20 mt-4">
-          A shareable birthday canvas url maker application made easy to use. S for your loved ones.
+        <h2 className="font-roboto text-lg text-black font-medium text-center line-clamp-4 px-20 mt-4">
+         Just click the button to start writing a designing or writing a message.
           No Account no hassle.
         </h2>
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-4">
           <Link href="/create">
             <Button>Write a message!</Button>
           </Link>
