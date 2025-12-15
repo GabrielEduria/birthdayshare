@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import type { CanvasItem as BaseCanvasItem } from "@/app/types/CanvasItem";
+import type { CanvasItem as BaseCanvasItem } from "@/types/CanvasItem";
 import DraggableItem from "./DraggableItem";
 
 interface CanvasItemProps {

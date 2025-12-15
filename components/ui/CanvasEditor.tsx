@@ -4,7 +4,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Sidebar from "./sidebar/Sidebar";
 import CanvasItemComponent from "./CanvasItem";
-import type { CanvasItem as BaseCanvasItem } from "@/app/types/CanvasItem";
+import type { CanvasItem as BaseCanvasItem } from "@/types/CanvasItem";
 import { v4 as uuidv4 } from "uuid";
 
 type EditorCanvasItem = BaseCanvasItem & {

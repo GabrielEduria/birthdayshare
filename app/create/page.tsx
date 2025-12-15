@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import CanvasEditor from "../components/ui/CanvasEditor";
-import Header from "../components/Header";
-import Button from "../components/button/Button";
-import ErrorToast from "../components/ErrorToast";
-import type { CanvasItem } from "@/app/types/CanvasItem";
+import CanvasEditor from "../../components/ui/CanvasEditor";
+import Header from "../../components/Header";
+import Button from "../../components/button/Button";
+import ErrorToast from "../../components/ErrorToast";
+import type { CanvasItem } from "@/types/CanvasItem";
 
 export default function Create() {
   const router = useRouter();

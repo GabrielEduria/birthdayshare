@@ -1,7 +1,7 @@
 "use client";
 
 import { Rnd } from "react-rnd";
-import { CanvasItem } from "@/app/types/CanvasItem";
+import { CanvasItem } from "@/types/CanvasItem";
 
 interface DraggableItemProps {
   item: CanvasItem & {
