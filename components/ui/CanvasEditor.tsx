@@ -206,7 +206,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
   const canvasStyle = useMemo<React.CSSProperties>(() => {
     if (!canvasBg) {
       return {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#808080",
       };
     }
 

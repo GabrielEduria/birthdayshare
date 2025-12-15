@@ -51,23 +51,7 @@ export default function Create() {
 
       {error && <ErrorToast message={error} />}
 
-      <div
-        className="p-6 flex flex-col items-center min-h-screen font-roboto"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #f0f0f0 1px, transparent 1px),
-            linear-gradient(to bottom, #f0f0f0 1px, transparent 1px),
-            radial-gradient(circle 600px at 0% 200px, #d5c5ff, transparent),
-            radial-gradient(circle 600px at 100% 200px, #d5c5ff, transparent)
-          `,
-          backgroundSize: `
-            96px 64px,
-            96px 64px,
-            100% 100%,
-            100% 100%
-          `,
-        }}
-      >
+      <div className="p-6 flex flex-col items-center min-h-screen font-roboto">
         <h1 className="text-2xl mb-4 font-semibold">Create Birthday Card</h1>
 
         <CanvasEditor onExport={setCanvasJson} />

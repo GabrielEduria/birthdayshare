@@ -39,7 +39,7 @@ export default function Sidebar({
   };
 
   return (
-    <div className="w-64 p-4 bg-white border-r overflow-y-auto flex flex-col gap-4">
+    <div className="w-64 p-4 bg-linear-to-r from-orange-100 to-lime-100 text-black border-r overflow-y-auto flex flex-col gap-4">
 
       <div className="p-2 border-b">
         <h3 className="font-semibold mb-2">Text</h3>
