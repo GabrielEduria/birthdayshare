@@ -247,7 +247,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex gap-2 items-center">
             <button
-              className="px-3 py-1 bg-white border rounded text-sm"
+              className="px-3 py-1 bg-gray-500 border rounded text-sm"
               onClick={() => {
                
                 handleAddText("Heading");
@@ -257,7 +257,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
             </button>
 
             <button
-              className="px-3 py-1 bg-white border rounded text-sm"
+              className="px-3 py-1 bg-gray-500 border rounded text-sm"
               onClick={() => {
                
                 if (onExport) onExport(items);

@@ -10,7 +10,7 @@ interface DraggableItemProps {
     color?: string;
     shape?: string;
   };
-  onChange: (updated: CanvasItem) => void;
+  onChange: (changes: Partial<CanvasItem>) => void;
   isSelected?: boolean;
   setSelected?: (id: string | null) => void;
   children: React.ReactNode;
@@ -28,10 +28,12 @@ export default function DraggableItem({
       size={{ width: item.width, height: item.height }}
       position={{ x: item.x, y: item.y }}
       bounds="parent"
-      onDragStop={(_, d) => onChange({ ...item, x: d.x, y: d.y })}
+      onDragStop={(_, d) =>
+        onChange({ x: d.x, y: d.y })
+      }
+
       onResizeStop={(_, __, ref, ___, position) =>
         onChange({
-          ...item,
           width: ref.offsetWidth,
           height: ref.offsetHeight,
           x: position.x,
