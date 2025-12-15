@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 
 export default function Welcome() {
 return (
-  <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-r from-rose-200 to-yellow-100  dark:bg-gray-950">
+  <div className="relative min-h-screen w-full overflow-hidden bg-linear-to-r from-rose-200 to-yellow-100  dark:bg-gray-950">
 
 
     <div className="absolute -inset-[10%] overflow-hidden">
@@ -25,28 +25,27 @@ return (
   
     <div className="absolute inset-0 backdrop-blur-[6px]" />
 
- 
-    <div className="relative z-20">
-      <Navbar />
-    </div>
-
-
-    <div className="relative z-30 w-5xl mx-auto text-center px-6 pt-50">
-      <p className="inline-block px-4 py-1 bg-white/80 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 rounded-2xl text-black dark:text-white mb-4">
-        Make a message now!
-      </p>
-      <h1 className="font-happy-monkey text-4xl lg:text-6xl text-black font-black leading-tight">
-        Welcome to Birthday-Share!
-      </h1>
-      <h2 className="font-roboto text-2xl lg:text-3xl text-black font-medium mt-4">
-        Your Shareable Birthday URL Web Application
-      </h2>
-      <div className="flex justify-center mt-8">
-        <Link href="/create">
-          <Button>Write a message!</Button>
-        </Link>
+  <div>
+      <div className="relative z-30 mx-auto text-center px-6 pt-50">
+        <p className="inline-block text-xs px-4 py-1 bg-gray-600/80 border border-gray-700 dark:border-gray-700 rounded-2xl text-black dark:text-gray-200 mb-4">
+          Make a message now!
+        </p>
+        <h1 className="font-happy-monkey text-4xl lg:text-6xl text-black font-black leading-tight">
+          Welcome to Birthday-Share!
+        </h1>
+        <h2 className="font-roboto text-2xl lg:text-3xl text-black font-medium mt-4">
+          Your Shareable Birthday URL Web Application
+        </h2>
+        <div className="flex justify-center mt-8">
+          <Link href="/create">
+            <Button>Write a message!</Button>
+          </Link>
+        </div>
       </div>
+    <div>
+
     </div>
+   </div>
   </div>
 );
 }
