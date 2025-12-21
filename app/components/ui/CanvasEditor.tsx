@@ -54,87 +54,6 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
     return newItem;
   };
 
-  const handleAddText = (preset?: string) => {
-    if (!preset) {
-      addItem({
-        type: "text",
-        content: "New text",
-        fontFamily: "Arial",
-        fontSize: 20,
-        color: "#000000",
-        width: 240,
-        height: 60,
-      });
-      return;
-    }
-
-    if (preset.startsWith("font:")) {
-      const font = preset.replace(/^font:/, "");
-      if (selected) {
-        setItems((prev) =>
-          prev.map((it) => (it.id === selected ? { ...it, fontFamily: font } : it))
-        );
-      }
-      return;
-    }
-
-    if (preset.startsWith("color:")) {
-      const color = preset.replace(/^color:/, "");
-      if (selected) {
-        setItems((prev) =>
-          prev.map((it) => (it.id === selected ? { ...it, color } : it))
-        );
-      }
-      return;
-    }
-
-    if (preset === "Heading") {
-      addItem({
-        type: "text",
-        content: "Heading",
-        fontFamily: "Montserrat",
-        fontSize: 40,
-        color: "#111827",
-        width: 420,
-        height: 80,
-      });
-      return;
-    }
-
-    if (preset === "Subheading") {
-      addItem({
-        type: "text",
-        content: "Subheading",
-        fontFamily: "Roboto",
-        fontSize: 28,
-        color: "#111827",
-        width: 360,
-        height: 64,
-      });
-      return;
-    }
-
-    if (preset === "Body") {
-      addItem({
-        type: "text",
-        content: "Body text",
-        fontFamily: "Roboto",
-        fontSize: 16,
-        color: "#111827",
-      });
-      return;
-    }
-
-    addItem({
-      type: "text",
-      content: preset,
-      fontFamily: "Great Vibes",
-      fontSize: 36,
-      color: "#111827",
-      width: 360,
-      height: 80,
-    });
-  };
 
   const handleAddImage = (urlOrBase64: string) => {
     addItem({
@@ -228,54 +147,26 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
   }, [canvasBg]);
 
   return (
-    <div className="w-full h-[720px] flex bg-gray-50 shadow rounded-2xl">
+    <div className="w-full h-[720px] flex bg-gray-50 shadow rounded-lg">
  
       <div className="flex-none">
         <Sidebar
-          onAddText={handleAddText}
+
           onAddImage={handleAddImage}
           onUploadImage={handleUploadImage}
           onSetBackground={handleSetBackground}
           onAddShape={handleAddShape}
-          onAddEmoji={handleAddEmoji}
-        />
+          onAddEmoji={handleAddEmoji} onAddText={function (preset?: string): void {
+            throw new Error("Function not implemented.");
+          } }        />
       </div>
 
   
       <div className="flex-1 p-6 flex flex-col">
     
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex gap-2 items-center">
-            <button
-              className="px-3 py-1 bg-gray-500 border rounded text-sm"
-              onClick={() => {
-               
-                handleAddText("Heading");
-              }}
-            >
-              Add Heading
-            </button>
-
-            <button
-              className="px-3 py-1 bg-gray-500 border rounded text-sm"
-              onClick={() => {
-               
-                if (onExport) onExport(items);
-              }}
-            >
-              Export JSON
-            </button>
-          </div>
-
-          <div className="text-sm text-gray-600">
-            Items: {items.length} {selected ? `• selected: ${selected}` : ""}
-          </div>
-        </div>
-
-
         <div
           ref={canvasRef}
-          className="relative flex-1 border rounded-lg overflow-hidden shadow-sm p-4 bg-white"
+          className="relative flex-1 border overflow-hidden shadow-sm p-4 bg-white"
           style={{
             ...canvasStyle,
             minHeight: 480,
