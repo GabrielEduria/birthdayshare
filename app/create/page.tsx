@@ -51,15 +51,15 @@ export default function Create() {
 
       {error && <ErrorToast message={error} />}
 
-      <div className="p-6 flex flex-col items-center min-h-screen font-roboto">
+      <div className="p-6 flex flex-col items-center font-roboto">
         <h1 className="text-2xl mb-4 font-semibold">Create Birthday Card</h1>
 
         <CanvasEditor onExport={setCanvasJson} />
 
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-4 ml-50">
           <input
             type="text"
-            className="border px-20 bg-white"
+            className="border px-20 bg-white text-black rounded-2xl"
             placeholder="Enter name for URL (ex: Sarah)"
             value={slug}
             onChange={(e) => {
