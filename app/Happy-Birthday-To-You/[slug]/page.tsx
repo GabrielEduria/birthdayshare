@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import CanvasItem from "@/components/ui/CanvasItem";
+import CanvasItem from "@/app/components/ui/CanvasItem";
 import type { CanvasItem as CanvasItemType } from "@/types/CanvasItem";
 
 async function getDesign(slug: string): Promise<CanvasItemType[] | null> {

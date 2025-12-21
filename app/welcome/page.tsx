@@ -1,7 +1,7 @@
 
 import Link from "next/link";
-import Button from "../../components/button/Button";
-import Navbar from "../../components/Navbar";
+import Button from "../components/button/Button";
+import Navbar from "../components/Navbar";
 
 export default function Welcome() {
 return (
@@ -30,7 +30,7 @@ x
        <h1 className="mx-auto max-w-5xl font-happy-monkey text-4xl lg:text-6xl px-12 text-center tracking-tight text-black font-black leading-tight">
           A shareable birthday canvas url maker made easy to use
         </h1>
-        <h2 className="font-roboto max-w-5xl text-lg text-black font-medium text-center line-clamp-4 px-12 mt-4">
+        <h2 className="font-roboto text-lg text-center tracking-tight text-black leading-tight px-12 mt-4">
           A quick minute tool, responsive canvas maker, Zero-hassle, No account Needed
         </h2>
         <div className="flex justify-center mt-4">
