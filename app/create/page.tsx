@@ -46,7 +46,7 @@ export default function Create() {
   };
 
   return (
-    <>
+    <div className="min-h-full">
       <Header />
 
       {error && <ErrorToast message={error} />}
@@ -77,6 +77,6 @@ export default function Create() {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
