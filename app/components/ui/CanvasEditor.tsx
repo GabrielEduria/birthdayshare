@@ -147,7 +147,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
   }, [canvasBg]);
 
   return (
-    <div className="w-full h-[720px] flex bg-gray-50 shadow rounded-lg">
+    <div className="w-full h-auto flex bg-gray-50 shadow rounded-lg">
  
       <div className="flex-none">
         <Sidebar
