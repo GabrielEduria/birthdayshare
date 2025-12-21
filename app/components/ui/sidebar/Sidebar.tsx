@@ -39,15 +39,15 @@ export default function Sidebar({
   };
 
   return (
-    <div className="w-64 p-4 bg-linear-to-r from-orange-100 to-lime-100 text-black border-r overflow-y-auto flex flex-col gap-4">
+    <div className="w-64 p-4 bg-linear-to-r from-orange-100 to-lime-100 text-black overflow-y-auto flex flex-col gap-4 rounded-xl">
 
       <div className="p-2 border-b">
         <h3 className="font-semibold mb-2">Text</h3>
 
         <div className="flex flex-col gap-1 mb-2">
-          <button onClick={() => onAddText("Heading")} className="px-2 py-1 border rounded">Heading</button>
-          <button onClick={() => onAddText("Subheading")} className="px-2 py-1 border rounded">Subheading</button>
-          <button onClick={() => onAddText("Body")} className="px-2 py-1 border rounded">Body</button>
+          <button onClick={() => onAddText("Heading")} className="px-2 py-1 border rounded  cursor-pointer overflow-hidden hover:scale-110 transition-3s">Heading</button>
+          <button onClick={() => onAddText("Subheading")} className="px-2 py-1 border rounded  cursor-pointer overflow-hidden hover:scale-110 transition-3s">Subheading</button>
+          <button onClick={() => onAddText("Body")} className="px-2 py-1 border rounded  cursor-pointer overflow-hidden hover:scale-110 transition-3s">Body</button>
         </div>
 
         <div className="mb-2">
@@ -57,7 +57,7 @@ export default function Sidebar({
               <button
                 key={f}
                 onClick={() => onAddText(`font:${f}`)}
-                className="px-2 py-1 border rounded text-sm"
+                className="px-2 py-1 border rounded text-sm cursor-pointer hover:scale-110 transition-3s"
                 style={{ fontFamily: f }}
               >
                 {f}
@@ -73,7 +73,7 @@ export default function Sidebar({
               <button
                 key={c}
                 onClick={() => onAddText(`color:${c}`)}
-                className="w-6 h-6 rounded border"
+                className="w-6 h-6 rounded border cursor-pointer hover:scale-110 transition-3s"
                 style={{ backgroundColor: c }}
               />
             ))}
@@ -87,7 +87,7 @@ export default function Sidebar({
           <input type="file" onChange={handleFileUpload} className="mb-2" />
           <button
             onClick={() => onAddImage && onAddImage("https://placekitten.com/200/200")}
-            className="px-2 py-1 border rounded"
+            className="px-2 py-1 border rounded cursor-pointer hover:scale-110 transition-3s"
           >
             Sample Image
           </button>
@@ -101,7 +101,7 @@ export default function Sidebar({
             <button
               key={s}
               onClick={() => onAddShape && onAddShape(s)}
-              className="px-2 py-1 border rounded"
+              className="px-2 py-1 border rounded cursor-pointer hover:scale-110 transition-3s"
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
             </button>
@@ -113,7 +113,7 @@ export default function Sidebar({
         <h3 className="font-semibold mb-2">Emoji</h3>
         <div className="flex gap-2 flex-wrap">
           {emojis.map(e => (
-            <button key={e} onClick={() => onAddEmoji && onAddEmoji(e)} className="px-2 py-1 border rounded text-lg">
+            <button key={e} onClick={() => onAddEmoji && onAddEmoji(e)} className="px-2 py-1 border rounded text-lg cursor-pointer hover:scale-110 transition-3s">
               {e}
             </button>
           ))}
@@ -127,7 +127,7 @@ export default function Sidebar({
             <button
               key={bg}
               onClick={() => onSetBackground && onSetBackground(bg)}
-              className="w-10 h-10 rounded border"
+              className="w-10 h-10 rounded border cursor-pointer overflow-hidden hover:scale-110"
               style={{ background: bg }}
             />
           ))}
