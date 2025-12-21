@@ -166,7 +166,7 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
     
         <div
           ref={canvasRef}
-          className="relative flex-1 border overflow-hidden shadow-sm p-4 bg-white"
+          className="relative flex-1 border-1px overflow-hidden shadow-sm p-4 bg-white"
           style={{
             ...canvasStyle,
             minHeight: 480,

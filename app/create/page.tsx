@@ -51,8 +51,8 @@ export default function Create() {
 
       {error && <ErrorToast message={error} />}
 
-      <div className="p-6 flex flex-col items-center font-roboto">
-        <h1 className="text-2xl mb-4 font-semibold">Create Birthday Card</h1>
+      <div className="p-6 flex flex-col items-center bg-gray-100 text-black font-roboto">
+        <h1 className="text-2xl mb-4 font-semibold">Create A Birthday Card</h1>
 
         <CanvasEditor onExport={setCanvasJson} />
 
