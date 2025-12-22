@@ -1,13 +1,12 @@
 
 import Link from "next/link";
 import Button from "../components/button/Button";
-import Navbar from "../components/Navbar";
 
 export default function Welcome() {
 return (
   <div className="relative min-h-screen w-full overflow-hidden bg-linear-to-r from-rose-200 to-yellow-100  dark:bg-gray-950">
 
-
+  {/*BG Tailwind Snippet*/}
     <div className="absolute -inset-[10%] overflow-hidden">
       <div className="absolute top-[10%] left-[20%] w-[30%] aspect-square rounded-full 
         bg-linear-to-r from-purple-300/40 to-indigo-400/40 
@@ -22,10 +21,13 @@ return (
         dark:from-emerald-600/20 dark:to-teal-700/20 blur-3xl" />
     </div>
 
-  
     <div className="absolute inset-0 h-full backdrop-blur-[6px]" />
-x
-      <div className="relative z-30 text-center px-6 pt-50 ">
+
+
+   {/* Home Display */}
+    <div className="h-full w-full flex justify-center items-center">
+
+      <div className="relative z-30 text-center px-6 border border-black">
         <p className="font-roboto inline-block rounded-full shadow-2xl px-4 py-1 text-black backdrop-blur-xl bg-white/20">Birthday Share!</p>
        <h1 className="mx-auto max-w-5xl font-happy-monkey text-4xl lg:text-6xl px-12 text-center tracking-tight text-black font-black leading-tight">
           A shareable birthday canvas url maker made easy to use
@@ -40,6 +42,7 @@ x
         </div>
       </div>
 
+    </div>
   </div>
 );
 }
