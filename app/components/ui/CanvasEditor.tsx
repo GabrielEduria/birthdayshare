@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+ "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Sidebar from "./sidebar/Sidebar";
@@ -12,9 +11,7 @@ type EditorCanvasItem = BaseCanvasItem & {
   fontFamily?: string;
   fontSize?: number;
   color?: string;
-
   shape?: string;
-
   locked?: boolean;
 };
 
