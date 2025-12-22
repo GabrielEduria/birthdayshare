@@ -1,9 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import type { CanvasItem as BaseCanvasItem } from "@/types/CanvasItem";
 import DraggableItem from "./DraggableItem";
+import SlateTextBlock from "./SlateTextBlock";
+import { Descendant, Text } from "slate";
 
 interface CanvasItemProps {
   item: BaseCanvasItem & {
@@ -12,11 +13,9 @@ interface CanvasItemProps {
     color?: string;
     shape?: string;
   };
-
   selectedId?: string | null;
   setSelected?: (id: string | null) => void;
   updateItem?: (id: string, changes: Partial<BaseCanvasItem>) => void;
-
   readOnly?: boolean;
 }
 
@@ -28,29 +27,9 @@ function renderShape(
 ) {
   switch (shape) {
     case "rectangle":
-      return (
-        <div
-          style={{
-            width,
-            height,
-            backgroundColor: color || "#e5e7eb",
-            borderRadius: 8,
-          }}
-        />
-      );
-
+      return <div style={{ width, height, backgroundColor: color || "#e5e7eb", borderRadius: 8 }} />;
     case "circle":
-      return (
-        <div
-          style={{
-            width,
-            height,
-            borderRadius: "50%",
-            backgroundColor: color || "#e5e7eb",
-          }}
-        />
-      );
-
+      return <div style={{ width, height, borderRadius: "50%", backgroundColor: color || "#e5e7eb" }} />;
     case "star":
       return (
         <div
@@ -63,7 +42,6 @@ function renderShape(
           }}
         />
       );
-
     case "heart":
       return (
         <div
@@ -76,11 +54,26 @@ function renderShape(
           }}
         />
       );
-
     default:
       return null;
   }
 }
+
+// Convert string content to Slate nodes
+const stringToSlate = (text: string): Descendant[] => [
+  { type: "paragraph", children: [{ text }] as Text[] },
+];
+
+// Convert Slate nodes back to string
+const slateToString = (nodes: Descendant[]): string =>
+  nodes
+    .map((n) => {
+      if ("children" in n) {
+        return n.children.map((c) => ("text" in c ? c.text : "")).join("");
+      }
+      return "";
+    })
+    .join("\n");
 
 export default function CanvasItem({
   item,
@@ -90,35 +83,27 @@ export default function CanvasItem({
   readOnly = false,
 }: CanvasItemProps) {
   const isSelected = selectedId === item.id;
+
+  // Initialize Slate value once, using item.id to detect new items
+  const initialSlateValue = useMemo(() => stringToSlate(item.content), [item.id]);
+  const [slateValue, setSlateValue] = useState<Descendant[]>(initialSlateValue);
+
+  const handleSlateChange = (value: Descendant[]) => {
+    setSlateValue(value);
+    updateItem?.(item.id, { content: slateToString(value) });
+  };
+
   const content = (() => {
     if (item.type === "text") {
       return (
-        <div
-          contentEditable={!readOnly}
-          suppressContentEditableWarning
-          style={{
-            width: "100%",
-            height: "100%",
-            fontFamily: item.fontFamily || "Poppins, sans-serif",
-            fontSize: item.fontSize || 32,
-            color: item.color || "#111827",
-            textAlign: "center",
-            whiteSpace: "pre-wrap",
-            lineHeight: 1.2,
-            cursor: readOnly ? "default" : "text",
-            userSelect: readOnly ? "none" : "text",
-          }}
-          onInput={
-            readOnly || !updateItem
-              ? undefined
-              : (e) =>
-                  updateItem(item.id, {
-                    content: e.currentTarget.innerText,
-                  })
-          }
-        >
-          {item.content}
-        </div>
+        <SlateTextBlock
+          value={slateValue}
+          onChange={handleSlateChange}
+          readOnly={readOnly}
+          fontSize={item.fontSize || 32}
+          fontFamily={item.fontFamily || "Poppins, sans-serif"}
+          color={item.color || "#111827"}
+        />
       );
     }
 
@@ -165,9 +150,7 @@ export default function CanvasItem({
       item={item}
       isSelected={isSelected}
       setSelected={setSelected!}
-      onChange={(updatedItem) =>
-        updateItem && updateItem(item.id, updatedItem)
-      }
+      onChange={(updatedItem) => updateItem && updateItem(item.id, updatedItem)}
     >
       {content}
     </DraggableItem>
