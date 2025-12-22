@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Sidebar from "./sidebar/Sidebar";
@@ -7,7 +7,6 @@ import type { CanvasItem as BaseCanvasItem } from "@/types/CanvasItem";
 import { v4 as uuidv4 } from "uuid";
 
 type EditorCanvasItem = BaseCanvasItem & {
-
   fontFamily?: string;
   fontSize?: number;
   color?: string;
@@ -20,42 +19,55 @@ interface CanvasEditorProps {
 }
 
 export default function CanvasEditor({ onExport }: CanvasEditorProps) {
-
   const [items, setItems] = useState<EditorCanvasItem[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [canvasBg, setCanvasBg] = useState<string | null>(null);
   const canvasRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (onExport) onExport(items);
+    onExport?.(items);
   }, [items, onExport]);
 
-  const makeBase = (overrides: Partial<EditorCanvasItem> = {}): EditorCanvasItem => {
-    const id = uuidv4();
-    return {
-      id,
-      type: "text",
-      content: "",
-      x: 40,
-      y: 40,
-      width: 200,
-      height: 60,
-      ...overrides,
-    } as EditorCanvasItem;
-  };
+const makeBase = (
+  overrides: Partial<EditorCanvasItem> = {}
+): EditorCanvasItem => ({
+  id: uuidv4(),
+  type: "text",
+  content: "",
+  x: 40,
+  y: 40,
+  width: 200,
+  height: 60,
+  fontFamily: "Arial",
+  fontSize: 20,
+  color: "#000000",
+  ...overrides,
+});
 
   const addItem = (item: Partial<EditorCanvasItem>) => {
     const newItem = makeBase(item);
-    setItems((s) => [...s, newItem]);
+    setItems((prev) => [...prev, newItem]);
     setSelected(newItem.id);
-    return newItem;
   };
 
+  /* ---------- Sidebar Actions ---------- */
 
-  const handleAddImage = (urlOrBase64: string) => {
+  const handleAddText = () => {
+    addItem({
+      type: "text",
+      content: "New text",
+      fontFamily: "Arial",
+      fontSize: 20,
+      color: "#000000",
+      width: 240,
+      height: 60,
+    });
+  };
+
+  const handleAddImage = (url: string) => {
     addItem({
       type: "image",
-      content: urlOrBase64,
+      content: url,
       width: 240,
       height: 240,
     });
@@ -63,26 +75,20 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
 
   const handleUploadImage = (file: File) => {
     const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.result) {
-        handleAddImage(reader.result.toString());
-      }
-    };
+    reader.onload = () => reader.result && handleAddImage(reader.result.toString());
     reader.readAsDataURL(file);
   };
 
-  const handleSetBackground = (bg: string) => {
-    setCanvasBg(bg);
-  };
+  const handleSetBackground = (bg: string) => setCanvasBg(bg);
 
   const handleAddShape = (shape: string) => {
     addItem({
       type: "image",
-      content: "",  
       shape,
+      content: "",
       width: 120,
       height: 120,
-      color: "#F59E0B",  
+      color: "#F59E0B",
     });
   };
 
@@ -101,36 +107,13 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...changes } : it)));
   };
 
-  const deleteItem = (id: string) => {
-    setItems((prev) => prev.filter((it) => it.id !== id));
-    if (selected === id) setSelected(null);
-  };
-
-  const duplicateItem = (id: string) => {
-    const original = items.find((i) => i.id === id);
-    if (!original) return;
-    const copy = makeBase({
-      ...original,
-      id: uuidv4(),
-      x: original.x + 12,
-      y: original.y + 12,
-    });
-    setItems((prev) => [...prev, copy]);
-    setSelected(copy.id);
-  };
-
   const canvasStyle = useMemo<React.CSSProperties>(() => {
-    if (!canvasBg) {
-      return {
-        backgroundColor: "#808080",
-      };
-    }
+    if (!canvasBg) return { backgroundColor: "#ffffff" };
 
-    if (canvasBg.startsWith("linear-gradient") || canvasBg.startsWith("radial-gradient")) {
+    if (canvasBg.startsWith("linear") || canvasBg.startsWith("radial")) {
       return { backgroundImage: canvasBg };
     }
 
- 
     if (canvasBg.startsWith("data:") || canvasBg.startsWith("http") || canvasBg.startsWith("/")) {
       return {
         backgroundImage: `url(${canvasBg})`,
@@ -139,43 +122,35 @@ export default function CanvasEditor({ onExport }: CanvasEditorProps) {
       };
     }
 
-
     return { backgroundColor: canvasBg };
   }, [canvasBg]);
 
   return (
-    <div className="w-full h-auto flex bg-gray-50 shadow rounded-lg">
- 
-      <div className="flex-none">
-        <Sidebar
+    <div className="w-full h-full flex bg-gray-50 rounded-lg overflow-hidden">
+      {/* Sidebar */}
+      <Sidebar
+        onAddText={handleAddText}
+        onAddImage={handleAddImage}
+        onUploadImage={handleUploadImage}
+        onSetBackground={handleSetBackground}
+        onAddShape={handleAddShape}
+        onAddEmoji={handleAddEmoji}
+      />
 
-          onAddImage={handleAddImage}
-          onUploadImage={handleUploadImage}
-          onSetBackground={handleSetBackground}
-          onAddShape={handleAddShape}
-          onAddEmoji={handleAddEmoji} onAddText={function (preset?: string): void {
-            throw new Error("Function not implemented.");
-          } }        />
-      </div>
-
-  
-      <div className="flex-1 p-6 flex flex-col">
-    
+      {/* Canvas */}
+      <div className="flex-1 p-4 flex">
         <div
           ref={canvasRef}
-          className="relative flex-1 border-1px overflow-hidden shadow-sm p-4 bg-white"
-          style={{
-            ...canvasStyle,
-            minHeight: 480,
-          }}
+          className="relative flex-1 overflow-hidden rounded-md border bg-white"
+          style={canvasStyle}
         >
           {items.map((it) => (
             <CanvasItemComponent
               key={it.id}
-              item={it as EditorCanvasItem}
+              item={it}
               selectedId={selected}
               setSelected={setSelected}
-              updateItem={(id, changes) => updateItem(id, changes)}
+              updateItem={updateItem}
             />
           ))}
         </div>

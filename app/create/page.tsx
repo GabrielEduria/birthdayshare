@@ -10,19 +10,15 @@ import type { CanvasItem } from "@/types/CanvasItem";
 
 export default function Create() {
   const router = useRouter();
-
   const [slug, setSlug] = useState("");
   const [canvasJson, setCanvasJson] = useState<CanvasItem[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   const saveCard = async () => {
-    if (!slug.trim()) {
-      setError("Enter a name for your card URL");
-      return;
-    }
-    setSaving(true);
+    if (!slug.trim()) return setError("Enter a name for your card URL");
 
+    setSaving(true);
     try {
       const res = await fetch("/api/saveCard", {
         method: "POST",
@@ -31,12 +27,8 @@ export default function Create() {
       });
 
       const data = await res.json();
-
-      if (res.ok) {
-        router.push(`/Happy-Birthday-To-You/${data.slug}`);
-      } else {
-        setError(data.error || "Error saving card");
-      }
+      if (!res.ok) throw new Error(data.error);
+      router.push(`/happy-birthday-to-you/${data.slug}`);
     } catch {
       setError("Failed to save card");
     } finally {
@@ -45,36 +37,38 @@ export default function Create() {
   };
 
   return (
-    <div className="min-h-full">
+    <div className="h-screen flex flex-col">
       <Header />
-
       {error && <ErrorToast message={error} />}
 
-      <div className="p-6 flex flex-col items-center bg-gray-100 text-black font-roboto">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"></div>
-        <h1 className="text-2xl mb-4 font-semibold">Create A Birthday Card</h1>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top bar */}
+        <div className="flex items-center gap-4 px-6 py-3 border-b bg-white">
+          <h1 className="font-semibold text-lg">Create Birthday Card</h1>
 
-        <CanvasEditor onExport={setCanvasJson} />
+          <div className="ml-auto flex gap-2">
+            <input
+              className="border px-3 py-2 rounded-md text-sm w-56"
+              placeholder="URL name (e.g. sarah)"
+              value={slug}
+              onChange={(e) => {
+                setError("");
+                setSlug(e.target.value);
+              }}
+            />
+            <Button
+              onClick={saveCard}
+              disabled={saving}
+              className="px-4 py-2 bg-green-600 text-white rounded-md"
+            >
+              {saving ? "Saving..." : "Publish"}
+            </Button>
+          </div>
+        </div>
 
-        <div className="flex gap-2 mt-4 ml-50">
-          <input
-            type="text"
-            className="border px-20 bg-white text-black rounded-2xl"
-            placeholder="Enter name for URL (ex: Sarah)"
-            value={slug}
-            onChange={(e) => {
-              setError("");
-              setSlug(e.target.value);
-            }}
-          />
-
-          <Button
-            onClick={saveCard}
-            className="px-4 py-1 bg-green-600 text-white rounded"
-            disabled={saving}
-          >
-            {saving ? "Saving..." : "Publish"}
-          </Button>
+        {/* Editor */}
+        <div className="flex-1 overflow-hidden">
+          <CanvasEditor onExport={setCanvasJson} />
         </div>
       </div>
     </div>
