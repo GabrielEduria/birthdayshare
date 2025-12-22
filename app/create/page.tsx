@@ -21,7 +21,6 @@ export default function Create() {
       setError("Enter a name for your card URL");
       return;
     }
-
     setSaving(true);
 
     try {
@@ -52,6 +51,7 @@ export default function Create() {
       {error && <ErrorToast message={error} />}
 
       <div className="p-6 flex flex-col items-center bg-gray-100 text-black font-roboto">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"></div>
         <h1 className="text-2xl mb-4 font-semibold">Create A Birthday Card</h1>
 
         <CanvasEditor onExport={setCanvasJson} />
