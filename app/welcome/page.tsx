@@ -1,28 +1,46 @@
-// import Link from "next/link";
+import Link from "next/link";
+import Button from "../components/button/Button";
+import { FaArrowRight } from "react-icons/fa";
+import Header from "../components/Header";
 
 export default function Welcome() {
   return (
-    <div className="welcome-section  text-black min-h-screen flex">
-      <div className="welcome-left-section flex-1 bg-amber-200 p-5 ">
-        <div className="z-10 relative lg:mt-4 lg:mb-16 bg-amber-950">
-          <h1>Continue to app!</h1>
+    <div>
+    <Header/>
+    <section className="h-screen flex bg-white text-black">
+   
+      <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 bg-[#F5FAFA]">
+         
+        <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4">
+          Celebrate birthdays with a single shareable link
+        </h1>
+
+        <p className="text-base md:text-lg text-gray-700 max-w-xl mb-8">
+          BirthdayShare lets you create a personalized birthday message page
+          that you can share instantly—no apps, no sign-ups for recipients.
+        </p>
+
+        <div>
+          <Button className="flex items-center gap-2 px-6 py-3 text-base">
+            <Link href="/create" className="flex items-center gap-2">
+              Create your birthday link <FaArrowRight />
+            </Link>
+          </Button>
         </div>
-        <div className="pb-6 lg:pb-8 flex-1"></div>
       </div>
 
-      <div className="welcome-right-section bg-[#FF9280] flex-1 flex items-center justify-center">
-        <div className="z-10 relative p-4 text-center">
-          <blockquote className="text-sm md:text-xl lg:text-2xl font-medium mb-1 md:mb-6 lg:mb-8">
-            BirthdayShare — a shareable URL app by {" "}
-            <a
-              href="http://gabrieleduria.com"
-              className="text-blue-700 hover:underline transition duration-200"
-            >
-              Gabbbyyyy
-            </a>
-          </blockquote>
+   
+      <div className="hidden lg:flex flex-1 items-center justify-center bg-[#FF9280]">
+        <div className="max-w-md text-center px-8">
+          <p className="text-xl font-semibold mb-2">
+            Simple. Personal. Shareable.
+          </p>
+          <p className="text-base text-black/80">
+            One link. One message. A better way to say happy birthday.
+          </p>
         </div>
       </div>
+    </section>
     </div>
   );
 }

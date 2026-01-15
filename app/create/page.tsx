@@ -16,7 +16,10 @@ export default function Create() {
   const [error, setError] = useState("");
 
   const saveCard = async () => {
-    if (!slug.trim()) return setError("Enter a name for your card URL");
+    if (!slug.trim()) {
+      setError("Choose a URL name for your birthday page");
+      return;
+    }
 
     setSaving(true);
     try {
@@ -28,46 +31,57 @@ export default function Create() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+
       router.push(`/happy-birthday-to-you/${data.slug}`);
     } catch {
-      setError("Failed to save card");
+      setError("Something went wrong while publishing");
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-gray-50">
       <Header />
       {error && <ErrorToast message={error} />}
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top bar */}
-        <div className="flex items-center gap-4 px-6 py-3 border-b bg-white">
-          <h1 className="font-semibold text-lg">Create Birthday Card</h1>
 
-          <div className="ml-auto flex gap-2">
-            <input
-              className="border px-3 py-2 rounded-md text-sm w-56"
-              placeholder="URL name (e.g. sarah)"
-              value={slug}
-              onChange={(e) => {
-                setError("");
-                setSlug(e.target.value);
-              }}
-            />
+        <div className="flex items-center px-6 py-4 border-b bg-blue-300">
+          <div>
+            <h1 className="text-lg font-semibold text-gray-600">Design your birthday page</h1>
+            <p className="text-sm text-gray-600">
+              Customize the message, then publish a shareable link
+            </p>
+          </div>
+
+          <div className="ml-auto flex items-center gap-3">
+            <div className="flex flex-col">
+              <input
+                className="border px-3 py-2 rounded-md text-sm w-60 focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Public URL name (e.g. sarah)"
+                value={slug}
+                onChange={(e) => {
+                  setError("");
+                  setSlug(e.target.value);
+                }}
+              />
+              <span className="text-xs text-gray-600 mt-1">
+                birthdayshare.com/happy-birthday-to-you/{slug || "your-name"}
+              </span>
+            </div>
+
             <Button
               onClick={saveCard}
               disabled={saving}
-              className="px-4 py-2 bg-green-600 text-white rounded-md"
+              className="px-5 py-2 bg-green-600 text-white rounded-md font-medium"
             >
-              {saving ? "Saving..." : "Publish"}
+              {saving ? "Publishing..." : "Publish"}
             </Button>
           </div>
         </div>
 
-        {/* Editor */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden bg-gray-100">
           <CanvasEditor onExport={setCanvasJson} />
         </div>
       </div>

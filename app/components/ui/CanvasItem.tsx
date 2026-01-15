@@ -59,12 +59,10 @@ function renderShape(
   }
 }
 
-// Convert string content to Slate nodes
 const stringToSlate = (text: string): Descendant[] => [
   { type: "paragraph", children: [{ text }] as Text[] },
 ];
 
-// Convert Slate nodes back to string
 const slateToString = (nodes: Descendant[]): string =>
   nodes
     .map((n) => {
